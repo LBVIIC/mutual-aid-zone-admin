@@ -1,71 +1,24 @@
 <template>
-  <div class="main-content">
+  <el-container>
+    <Header></Header>
     <el-container>
-      <el-header>Header</el-header>
-      <el-container>
-        <el-aside width="200px">Aside</el-aside>
-        <el-container>
-          <el-main>
-            <h1>main</h1>
-            <h1>main</h1>
-            <h1>main</h1>
-            <h1>main</h1>
-            <h1>main</h1>
-            <h1>main</h1>
-            <h1>main</h1>
-            <h1>main</h1>
-            <h1>main</h1>
-            <h1>main</h1>
-            <h1>main</h1>
-            <h1>main</h1>
-            <h1>main</h1>
-            <h1>main</h1>
-            <h1>main</h1>
-            <h1>main</h1>
-            <h1>main</h1>
-            <h1>main</h1>
-            <h1>main</h1>
-            <h1>main</h1>
-            <h1>main</h1>
-          </el-main>
-        </el-container>
-      </el-container>
+      <Sidebar></Sidebar>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
     </el-container>
-  </div>
+  </el-container>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import Header from '../components/Header.vue';
+import Sidebar from '../components/Sidebar.vue';
+</script>
 
 <style lang="less" scoped>
-.main-content {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-.el-header {
-  background-color: pink;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-}
-
-.el-aside {
-  position: absolute;
-  top: 60px;
-  left: 0;
-  bottom: 0;
-  background-color: aqua;
-}
-
 .el-main {
-  position: absolute;
-  top: 60px;
-  bottom: 0;
-  right: 0;
-  left: 200px;
-  background-color: yellow;
+  margin: 70px 20px 20px 220px;
+  background-color: #fff;
+  box-shadow: 0 0 10px #e8e8e8;
 }
 </style>

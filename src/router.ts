@@ -9,22 +9,29 @@ const routes = [
   {
     path: '/admin',
     name: 'Home',
-    component: () => import(/* webpackChunkName: "home" */ './views/HomeView.vue')
-  },
-  {
-    path: '/admin/user',
-    name: 'User',
-    component: () => import(/* webpackChunkName: "user" */ './views/UserView.vue')
-  },
-  {
-    path: '/admin/task',
-    name: 'Task',
-    component: () => import(/* webpackChunkName: "task" */ './views/TaskView.vue')
-  },
-  {
-    path: '/admin/store',
-    name: 'Store',
-    component: () => import(/* webpackChunkName: "store" */ './views/StoreView.vue')
+    component: () => import(/* webpackChunkName: "home" */ './views/HomeView.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Index',
+        component: () => import(/* webpackChunkName: "index" */ './views/IndexView.vue')
+      },
+      {
+        path: 'user',
+        name: 'User',
+        component: () => import(/* webpackChunkName: "user" */ './views/UserView.vue')
+      },
+      {
+        path: 'task',
+        name: 'Task',
+        component: () => import(/* webpackChunkName: "task" */ './views/TaskView.vue')
+      },
+      {
+        path: 'store',
+        name: 'Store',
+        component: () => import(/* webpackChunkName: "store" */ './views/StoreView.vue')
+      }
+    ]
   }
 ];
 
