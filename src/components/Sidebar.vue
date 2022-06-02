@@ -50,6 +50,7 @@ const handleRouterLink = (index: number) => {
 <style lang="less" scoped>
 .el-aside {
   position: fixed;
+  z-index: 999;
   top: 50px;
   left: 0;
   bottom: 0;
