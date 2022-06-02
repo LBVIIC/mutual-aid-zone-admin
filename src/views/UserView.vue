@@ -18,7 +18,20 @@
 </template>
 
 <script lang="ts" setup>
-const userList = [
+import { getUsers } from '../api/user';
+
+interface User {
+  _id: string;
+  username: string;
+  password: string;
+  email: string;
+  phone: string;
+  address: string;
+  balance: number;
+  role: string;
+}
+
+const userList: User[] = [
   {
     _id: '6281f546321e768efb7b8ae4',
     username: '123456',
@@ -27,10 +40,7 @@ const userList = [
     phone: '18067055553',
     address: '浙江省嘉兴市',
     balance: 30,
-    role: '0',
-    avatar: '/images/upload_50d534f14ac4656499c6d5f65adf1409.jpg',
-    createdAt: '2022-05-16T06:55:02.149Z',
-    updatedAt: '2022-06-01T04:52:57.52Z'
+    role: '0'
   },
   {
     _id: '6281f546321e768efb7b8ae4',
@@ -40,10 +50,7 @@ const userList = [
     phone: '18067055553',
     address: '浙江省嘉兴市',
     balance: 30,
-    role: '0',
-    avatar: '/images/upload_50d534f14ac4656499c6d5f65adf1409.jpg',
-    createdAt: '2022-05-16T06:55:02.149Z',
-    updatedAt: '2022-06-01T04:52:57.52Z'
+    role: '0'
   }
 ];
 
@@ -53,6 +60,10 @@ const handleEdit = (row: any) => {
 const handleDelete = (row: any) => {
   console.log(row);
 };
+
+getUsers().then((res) => {
+  console.log(res);
+});
 </script>
 
 <style lang="less" scoped>
