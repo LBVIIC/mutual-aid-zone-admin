@@ -2,7 +2,7 @@
   <el-aside width="200px">
     <el-row>
       <el-col>
-        <el-menu default-active="1">
+        <el-menu :default-active="defaultActive">
           <el-menu-item index="1" @click="handleRouterLink(1)">
             <el-icon><HomeFilled /></el-icon>
             <span>首页</span>
@@ -26,9 +26,28 @@
 </template>
 
 <script lang="ts" setup>
-import { useRouter } from 'vue-router';
+import { ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 const router = useRouter();
+const route = useRoute();
+
+const defaultActive = ref('1');
+switch (route.name) {
+  case 'Index':
+    defaultActive.value = '1';
+    break;
+  case 'User':
+    defaultActive.value = '2';
+    break;
+  case 'Task':
+    defaultActive.value = '3';
+    break;
+  case 'Store':
+    defaultActive.value = '4';
+    break;
+}
+
 const handleRouterLink = (index: number) => {
   switch (index) {
     case 1:
