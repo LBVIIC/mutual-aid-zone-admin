@@ -1,6 +1,6 @@
 <template>
   <h2>商品管理</h2>
-  <el-button type="primary" @click="handleAdd(FormRef)">新增商品</el-button>
+  <el-button type="primary" @click="handleCreate()">新增商品</el-button>
 
   <!-- 表格 -->
   <el-table :data="goodList" stripe height="460" style="width: 100%" class="table">
@@ -31,7 +31,7 @@
         <el-input v-model="goodModel.name" />
       </el-form-item>
       <el-form-item label="价格" prop="price">
-        <el-input-number v-model="goodModel.price" :step="10" :min="0" :max="9999" />
+        <el-input-number v-model="goodModel.price" :step="10" :min="1" :max="9999" />
       </el-form-item>
       <el-form-item label="库存" prop="stock">
         <el-input-number v-model="goodModel.stock" :step="10" :min="0" :max="9999" />
@@ -54,89 +54,23 @@
 </template>
 
 <script lang="ts" setup>
-import { ElMessage, FormInstance, FormRules } from 'element-plus';
-import { reactive, ref } from 'vue';
-import { getGoods } from '../api/store';
-
-interface Good {
-  _id: string;
-  name: string;
-  price: number;
-  stock: number;
-  img: string;
-  imgFile: any;
-}
-
-const goodFormVisible = ref(false);
-const FormRef = ref();
-const imgFileRef = ref();
-
-const goodList = ref<Good[]>([]);
-const formType = reactive({
-  title: '新增商品',
-  type: 'add'
-});
-
-const rules = reactive<FormRules>({
-  name: [{ required: true, message: '商品名为必填项', trigger: 'blur' }]
-});
-
-const goodModel = ref<Good>({
-  _id: '',
-  name: '',
-  price: 0,
-  stock: 0,
-  img: '',
-  imgFile: null
-});
-
-const handleGoodList = async () => {
-  const { data: res } = await getGoods();
-  goodList.value = res.data;
-};
-
-const handleAdd = (formEl: FormInstance) => {
-  // formEl.resetFields();
-  formType.title = '新增商品';
-  formType.type = 'add';
-  goodFormVisible.value = true;
-};
-
-const handleEdit = (row: any) => {
-  formType.title = '编辑商品';
-  formType.type = 'edit';
-  goodFormVisible.value = true;
-};
-
-// 上传商品图片
-const handleImgUpload = () => {
-  imgFileRef.value.click();
-};
-
-// 获取上传图片
-const handleImgFile = () => {
-  goodModel.value.imgFile = imgFileRef.value.files[0];
-  goodModel.value.img = URL.createObjectURL(goodModel.value.imgFile);
-};
-
-const handleSubmit = async (formEl: FormInstance | undefined, type: string) => {
-  if (!formEl) return;
-  await formEl.validate(async (valid, fields) => {
-    if (valid) {
-      const { name, price, stock, img, imgFile } = goodModel.value;
-      if (!imgFile && !img) {
-        ElMessage.error('请上传图片！');
-        return;
-      }
-      if (type === 'add') {
-      } else if (type === 'edit') {
-      }
-    }
-  });
-};
-
-// 删除商品
-const handleDelete = async (row: any) => {};
+import { useGood } from '../composables/useGood';
+const {
+  goodList,
+  goodModel,
+  goodFormVisible,
+  FormRef,
+  imgFileRef,
+  formType,
+  rules,
+  handleGoodList,
+  handleCreate,
+  handleEdit,
+  handleImgUpload,
+  handleImgFile,
+  handleSubmit,
+  handleDelete
+} = useGood();
 
 handleGoodList();
 </script>

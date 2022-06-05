@@ -1,6 +1,6 @@
-import { ElMessage, FormInstance, FormRules } from 'element-plus';
 import { reactive, ref } from 'vue';
-import { addUser, deleteUser, editUser, getUser, getUsers } from '../api/user';
+import { ElMessage, FormInstance, FormRules } from 'element-plus';
+import { createUser, deleteUser, editUser, getUser, getUsers } from '../api/user';
 
 export const useUser = () => {
   interface User {
@@ -13,23 +13,6 @@ export const useUser = () => {
     balance: number;
     role: string | number;
   }
-
-  const addUserFormVisible = ref(false);
-  const editUserFormVisible = ref(false);
-  const addFormRef = ref<FormInstance>();
-  const editFormRef = ref<FormInstance>();
-
-  const userList = ref<User[]>([]);
-  const userModel = ref<User>({
-    _id: '',
-    username: '',
-    password: '',
-    email: '',
-    phone: '',
-    address: '',
-    balance: 0,
-    role: 0
-  });
 
   // 表单校验规则
   const rules = reactive<FormRules>({
@@ -53,6 +36,7 @@ export const useUser = () => {
   });
 
   // 获取用户列表
+  const userList = ref<User[]>([]);
   const handleUserList = async () => {
     const { data: res } = await getUsers();
     if (res.errno === 0) {
@@ -67,9 +51,23 @@ export const useUser = () => {
     }
   };
 
+  const userModel = ref<User>({
+    _id: '',
+    username: '',
+    password: '',
+    email: '',
+    phone: '',
+    address: '',
+    balance: 0,
+    role: 0
+  });
+  const createUserFormVisible = ref(false);
+  const editUserFormVisible = ref(false);
+  const createFormRef = ref<FormInstance>();
+  const editFormRef = ref<FormInstance>();
   // 新增用户
-  const handleAdd = (formEl: FormInstance | undefined) => {
-    addUserFormVisible.value = true;
+  const handleCreate = (formEl: FormInstance | undefined) => {
+    createUserFormVisible.value = true;
     formEl.resetFields();
   };
 
@@ -87,10 +85,10 @@ export const useUser = () => {
     await formEl.validate(async (valid, fields) => {
       if (valid) {
         const { username, password, email, phone } = userModel.value;
-        if (type === 'add') {
-          const { data: res } = await addUser(username, phone, email, password);
+        if (type === 'create') {
+          const { data: res } = await createUser(username, phone, email, password);
           if (res.errno === 0) {
-            addUserFormVisible.value = false;
+            createUserFormVisible.value = false;
             ElMessage({ message: '添加成功', type: 'success' });
             formEl.resetFields();
             handleUserList();
@@ -130,14 +128,14 @@ export const useUser = () => {
 
   return {
     rules,
-    addUserFormVisible,
+    createUserFormVisible,
     editUserFormVisible,
-    addFormRef,
+    createFormRef,
     editFormRef,
     userModel,
     userList,
     handleUserList,
-    handleAdd,
+    handleCreate,
     handleEdit,
     handleSubmit,
     handleDelete

@@ -1,6 +1,6 @@
 <template>
   <h2>用户管理</h2>
-  <el-button type="primary" @click="handleAdd(addFormRef)">新增用户</el-button>
+  <el-button type="primary" @click="handleCreate(createFormRef)">新增用户</el-button>
 
   <!-- 表格 -->
   <el-table :data="userList" stripe height="460" style="width: 100%" class="table">
@@ -23,8 +23,8 @@
   </el-table>
 
   <!-- 新增用户表单 -->
-  <el-dialog v-model="addUserFormVisible" title="新增用户">
-    <el-form ref="addFormRef" :model="userModel" label-width="80px" :rules="rules">
+  <el-dialog v-model="createUserFormVisible" title="新增用户">
+    <el-form ref="createFormRef" :model="userModel" label-width="80px" :rules="rules">
       <el-form-item label="用户名" prop="username">
         <el-input v-model="userModel.username" />
       </el-form-item>
@@ -40,8 +40,8 @@
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="addUserFormVisible = false">关闭</el-button>
-        <el-button type="primary" @click="handleSubmit(addFormRef, 'add')">提交</el-button>
+        <el-button @click="createUserFormVisible = false">关闭</el-button>
+        <el-button type="primary" @click="handleSubmit(createFormRef, 'create')">提交</el-button>
       </span>
     </template>
   </el-dialog>
@@ -88,14 +88,14 @@ import { useUser } from '../composables/useUser';
 
 const {
   rules,
-  addUserFormVisible,
+  createUserFormVisible,
   editUserFormVisible,
-  addFormRef,
+  createFormRef,
   editFormRef,
   userModel,
   userList,
   handleUserList,
-  handleAdd,
+  handleCreate,
   handleEdit,
   handleSubmit,
   handleDelete

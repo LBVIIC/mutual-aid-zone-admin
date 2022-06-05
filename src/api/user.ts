@@ -1,7 +1,7 @@
 import instance from '../utils/request';
 
 export const getUsers = () => {
-  return instance.get('/api/user/list');
+  return instance.get('/api/user');
 };
 
 export const getUser = (_id: string) => {
@@ -14,7 +14,7 @@ export const deleteUser = (_id: string) => {
   });
 };
 
-export const addUser = (username: string, phone: string, email: string, password: string) => {
+export const createUser = (username: string, phone: string, email: string, password: string) => {
   return instance.post('/api/user/register', {
     username,
     phone,
