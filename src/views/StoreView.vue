@@ -12,7 +12,7 @@
     <el-table-column prop="name" label="商品名" />
     <el-table-column prop="price" label="价格" />
     <el-table-column prop="stock" label="库存" />
-    <el-table-column label="操作" fixed="right">
+    <el-table-column label="操作" width="140" fixed="right">
       <template #default="scope">
         <el-button size="small" @click="handleEdit(scope.row)">编辑</el-button>
         <el-popconfirm title="确认要删除吗？" @confirm="handleDelete(scope.row)" confirm-button-text="确认" cancel-button-text="取消">
