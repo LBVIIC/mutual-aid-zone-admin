@@ -26,64 +26,41 @@
   </el-table>
 
   <!-- 表单 -->
-  <!-- <el-dialog v-model="goodFormVisible" :title="formType.title">
-    <el-form ref="FormRef" :model="goodModel" label-width="80px" :rules="rules">
-      <el-form-item label="商品名" prop="name">
-        <el-input v-model="goodModel.name" />
+  <el-dialog v-model="formVisible" title="编辑任务">
+    <el-form ref="formRef" :model="taskModel" label-width="80px" :rules="rules">
+      <el-form-item label="标题" prop="title">
+        <el-input v-model="taskModel.title" />
       </el-form-item>
       <el-form-item label="价格" prop="price">
-        <el-input-number v-model="goodModel.price" :step="10" :min="1" :max="9999" />
+        <el-input-number v-model="taskModel.price" :step="10" :min="0" :max="999" />
       </el-form-item>
-      <el-form-item label="库存" prop="stock">
-        <el-input-number v-model="goodModel.stock" :step="10" :min="0" :max="9999" />
+      <el-form-item label="接收者">
+        <el-input v-model="taskModel.setterName" disabled />
       </el-form-item>
-      <el-form-item label="图片">
-        <div class="uploader">
-          <input type="file" class="uploader__input" ref="imgFileRef" @change="handleImgFile" />
-          <img v-if="goodModel.img" :src="goodModel.img" @click="handleImgUpload" />
-          <el-icon v-else class="uploader__icon" @click="handleImgUpload"><Plus /></el-icon>
-        </div>
+      <el-form-item label="发布者">
+        <el-input v-model="taskModel.getterName" disabled />
+      </el-form-item>
+      <el-form-item label="状态">
+        <el-radio-group v-model="taskModel.status">
+          <el-radio :label="0">未接受</el-radio>
+          <el-radio :label="1">已接受</el-radio>
+          <el-radio :label="2">已完成</el-radio>
+        </el-radio-group>
       </el-form-item>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="goodFormVisible = false">关闭</el-button>
-        <el-button type="primary" @click="handleSubmit(FormRef, formType.type)">提交</el-button>
+        <el-button @click="formVisible = false">关闭</el-button>
+        <el-button type="primary" @click="handleSubmit(formRef)">提交</el-button>
       </span>
     </template>
-  </el-dialog> -->
+  </el-dialog>
 </template>
 
 <script lang="ts" setup>
-import { ElMessage } from 'element-plus';
-import { ref } from 'vue';
-import { deleteTask, getTasks } from '../api/task';
+import { useTask } from '../composables/useTask';
 
-interface Task {
-  _id: string;
-  title: string;
-  price: number;
-  setterName: string;
-  getterName: string;
-  status: string;
-}
-const taskList = ref<Task[]>([]);
-
-const handleTaskList = async () => {
-  const { data: res } = await getTasks();
-  taskList.value = res.data;
-};
-
-const handleDelete = async (row: any) => {
-  const { data: res } = await deleteTask(row._id);
-  if (res.errno === 0) {
-    ElMessage.success('删除成功');
-    handleTaskList();
-  } else {
-    ElMessage.error(res.msg);
-  }
-};
-
+const { formVisible, formRef, rules, taskList, taskModel, handleTaskList, handleDelete, handleEdit, handleSubmit } = useTask();
 handleTaskList();
 </script>
 
