@@ -1,5 +1,12 @@
 import instance from '../utils/request';
 
+export const login = (username: string, password: string) => {
+  return instance.post('/api/user/login', {
+    username,
+    password
+  });
+};
+
 export const getUsers = () => {
   return instance.get('/api/user');
 };

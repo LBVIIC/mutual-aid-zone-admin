@@ -44,4 +44,16 @@ const router = createRouter({
   routes
 });
 
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('token');
+  // 当没有token时，且访问的页面不是登录注册页时，跳转到登录页
+  if (!token && to.name !== 'Login') {
+    next({ name: 'Login' });
+  } else if (token && to.name === 'Login') {
+    next({ name: 'Index' });
+  } else {
+    next();
+  }
+});
+
 export default router;
