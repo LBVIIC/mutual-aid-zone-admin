@@ -1,8 +1,10 @@
 import { reactive, ref } from 'vue';
 import { ElMessage, FormInstance, FormRules } from 'element-plus';
-import { createUser, deleteUser, editUser, getUser, getUsers } from '../api/user';
+import { createUser, deleteUser, editUser, getUser, getUsers, login } from '../api/user';
+import { useRouter } from 'vue-router';
 
 export const useUser = () => {
+  const router = useRouter();
   interface User {
     _id: string;
     username: string;
@@ -30,9 +32,9 @@ export const useUser = () => {
     ],
     password: [
       { required: true, message: '密码为必填项', trigger: 'blur' },
-      { pattern: /^[a-zA-Z0-9_!]{6,16}$/, message: '密码长度应为6-16个字符', trigger: 'change' }
+      { pattern: /^[a-zA-Z0-9_!]{6,16}$/, message: '密码长度应为6-16个字符', trigger: 'blur' }
     ],
-    editPassword: [{ pattern: /^[a-zA-Z0-9_!]{6,16}$/, message: '密码长度应为6-16个字符', trigger: 'change' }]
+    editPassword: [{ pattern: /^[a-zA-Z0-9_!]{6,16}$/, message: '密码长度应为6-16个字符', trigger: 'blur' }]
   });
 
   // 获取用户列表
@@ -61,6 +63,30 @@ export const useUser = () => {
     balance: 0,
     role: 0
   });
+
+  // 登录
+  const loginFormRef = ref<FormInstance>();
+  const handleLogin = async (formEl: FormInstance | undefined) => {
+    if (!formEl) return;
+    await formEl.validate(async (valid, fields) => {
+      const { username, password } = userModel.value;
+      if (valid) {
+        const { data: res } = await login(username, password);
+        if (res.errno === 0) {
+          if (res.data.role === 1) {
+            localStorage.setItem('token', res.data.token);
+            userModel.value.username = '';
+            router.push({ name: 'Index' });
+          } else {
+            ElMessage.error('非管理员无法登录！');
+          }
+        } else {
+          ElMessage.error(res.msg);
+        }
+      }
+    });
+  };
+
   const createUserFormVisible = ref(false);
   const editUserFormVisible = ref(false);
   const createFormRef = ref<FormInstance>();
@@ -130,10 +156,12 @@ export const useUser = () => {
     rules,
     createUserFormVisible,
     editUserFormVisible,
+    loginFormRef,
     createFormRef,
     editFormRef,
     userModel,
     userList,
+    handleLogin,
     handleUserList,
     handleCreate,
     handleEdit,

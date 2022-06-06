@@ -19,6 +19,10 @@
             <el-icon><Shop /></el-icon>
             <span>商品管理</span>
           </el-menu-item>
+          <el-menu-item index="5" @click="handleRouterLink(5)">
+            <el-icon><CircleCloseFilled /></el-icon>
+            <span>退出登录</span>
+          </el-menu-item>
         </el-menu>
       </el-col>
     </el-row>
@@ -62,6 +66,9 @@ const handleRouterLink = (index: number) => {
     case 4:
       router.push({ name: 'Store' });
       break;
+    case 5:
+      localStorage.removeItem('token');
+      router.push({ name: 'Login' });
   }
 };
 </script>
