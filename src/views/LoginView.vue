@@ -13,12 +13,7 @@
           <el-form-item>
             <el-button type="primary" class="form-contain__signin__form__btn" @click="handleLogin(loginFormRef)">登录</el-button>
           </el-form-item>
-          <div class="form-contain__signin__tip">
-            <p>
-              忘记密码？
-              <a>立即找回</a>
-            </p>
-          </div>
+
         </el-form>
       </div>
 
