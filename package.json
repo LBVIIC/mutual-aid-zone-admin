@@ -3,8 +3,8 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite --port 3001",
-    "build": "vue-tsc --noEmit && vite build",
+    "dev": "cross-env NODE_ENV=development vite --port 3001",
+    "build": "cross-env NODE_ENV=production vue-tsc --noEmit && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
