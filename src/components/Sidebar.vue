@@ -1,8 +1,8 @@
 <template>
-  <el-aside width="200px">
+  <el-aside>
     <el-row>
       <el-col>
-        <el-menu :default-active="defaultActive">
+        <el-menu :default-active="defaultActive" :collapse="isCollapse">
           <el-menu-item index="1" @click="handleRouterLink(1)">
             <el-icon><HomeFilled /></el-icon>
             <span>首页</span>
@@ -26,15 +26,27 @@
         </el-menu>
       </el-col>
     </el-row>
+    <div class="switch">
+      <el-button :plain="true" @click="handleCollapse" circle>
+        <el-icon v-show="isCollapse"><Expand /></el-icon>
+        <el-icon v-show="!isCollapse"><Fold /></el-icon>
+      </el-button>
+    </div>
   </el-aside>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-
 const router = useRouter();
 const route = useRoute();
+const emits = defineEmits(['collapse']);
+
+const isCollapse = ref(false);
+const handleCollapse = () => {
+  isCollapse.value = !isCollapse.value;
+  emits('collapse', isCollapse.value);
+};
 
 const defaultActive = ref('1');
 switch (route.name) {
@@ -82,9 +94,20 @@ const handleRouterLink = (index: number) => {
   bottom: 0;
   border-right: 1px solid #e8e8e8;
   background-color: #fff;
+  width: initial;
 }
 
 .el-menu {
   border: 0;
+
+  &:not(.el-menu--collapse) {
+    width: 200px;
+  }
+}
+
+.switch {
+  position: absolute;
+  left: 15px;
+  bottom: 20px;
 }
 </style>
