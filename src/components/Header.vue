@@ -28,6 +28,10 @@
       line-height: 50px;
       font-size: 24px;
       text-align: center;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
     }
   }
 }
