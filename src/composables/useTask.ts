@@ -19,9 +19,13 @@ export const useTask = () => {
 
   // 获取任务列表
   const taskList = ref<Task[]>([]);
+  const page = ref(1);
+  const pageSize = 8;
+  const total = ref(0);
   const handleTaskList = async () => {
-    const { data: res } = await getTasks();
-    taskList.value = res.data;
+    const { data: res } = await getTasks(page.value, pageSize);
+    taskList.value = res.data.list;
+    total.value = res.data.total;
   };
 
   // 删除任务
@@ -69,6 +73,9 @@ export const useTask = () => {
   };
 
   return {
+    page,
+    pageSize,
+    total,
     formVisible,
     formRef,
     rules,

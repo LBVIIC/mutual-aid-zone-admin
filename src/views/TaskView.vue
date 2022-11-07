@@ -1,7 +1,7 @@
 <template>
   <h2>任务管理</h2>
   <!-- 表格 -->
-  <el-table :data="taskList" stripe height="460" style="width: 100%" class="table">
+  <el-table :data="taskList" stripe height="400" style="width: 100%" class="table">
     <el-table-column prop="title" label="标题" />
     <el-table-column prop="price" label="价格" />
     <el-table-column prop="setterName" label="发布者" />
@@ -16,7 +16,12 @@
     <el-table-column label="操作" width="140" fixed="right">
       <template #default="scope">
         <el-button size="small" @click="handleEdit(scope.row)">编辑</el-button>
-        <el-popconfirm title="确认要删除吗？" @confirm="handleDelete(scope.row)" confirm-button-text="确认" cancel-button-text="取消">
+        <el-popconfirm
+          title="确认要删除吗？"
+          @confirm="handleDelete(scope.row)"
+          confirm-button-text="确认"
+          cancel-button-text="取消"
+        >
           <template #reference>
             <el-button size="small" type="danger">删除</el-button>
           </template>
@@ -24,6 +29,17 @@
       </template>
     </el-table-column>
   </el-table>
+
+  <div class="pagination">
+    <el-pagination
+      small
+      background
+      layout="prev, pager, next"
+      v-model:current-page="page"
+      v-model:page-size="pageSize"
+      :total="total"
+    />
+  </div>
 
   <!-- 表单 -->
   <el-dialog v-model="formVisible" title="编辑任务">
@@ -58,10 +74,38 @@
 </template>
 
 <script lang="ts" setup>
+import { watch } from 'vue';
 import { useTask } from '../composables/useTask';
 
-const { formVisible, formRef, rules, taskList, taskModel, handleTaskList, handleDelete, handleEdit, handleSubmit } = useTask();
+const {
+  page,
+  pageSize,
+  total,
+  formVisible,
+  formRef,
+  rules,
+  taskList,
+  taskModel,
+  handleTaskList,
+  handleDelete,
+  handleEdit,
+  handleSubmit
+} = useTask();
+
 handleTaskList();
+watch(
+  () => page.value,
+  () => {
+    handleTaskList();
+  },
+  { immediate: true }
+);
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.pagination {
+  margin-top: 15px;
+  display: flex;
+  justify-content: end;
+}
+</style>

@@ -1,7 +1,7 @@
 import instance from '../utils/request';
 
-export const getTasks = () => {
-  return instance.get('/api/task');
+export const getTasks = (page: number, pageSize: number) => {
+  return instance.get('/api/task', { params: { page, pageSize } });
 };
 
 export const getTask = (_id: number) => {
