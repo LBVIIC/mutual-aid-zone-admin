@@ -1,31 +1,27 @@
 <template>
   <el-aside>
-    <el-row>
-      <el-col>
-        <el-menu :default-active="defaultActive" :collapse="isCollapse">
-          <el-menu-item index="1" @click="handleRouterLink(1)">
-            <el-icon><HomeFilled /></el-icon>
-            <span>首页</span>
-          </el-menu-item>
-          <el-menu-item index="2" @click="handleRouterLink(2)">
-            <el-icon><UserFilled /></el-icon>
-            <span>用户管理</span>
-          </el-menu-item>
-          <el-menu-item index="3" @click="handleRouterLink(3)">
-            <el-icon><List /></el-icon>
-            <span>任务管理</span>
-          </el-menu-item>
-          <el-menu-item index="4" @click="handleRouterLink(4)">
-            <el-icon><Shop /></el-icon>
-            <span>商品管理</span>
-          </el-menu-item>
-          <el-menu-item index="5" @click="handleRouterLink(5)">
-            <el-icon><CircleCloseFilled /></el-icon>
-            <span>退出登录</span>
-          </el-menu-item>
-        </el-menu>
-      </el-col>
-    </el-row>
+    <el-menu :default-active="defaultActive" :collapse="isCollapse">
+      <el-menu-item index="1" @click="handleRouterLink(1)">
+        <el-icon><HomeFilled /></el-icon>
+        <span>首页</span>
+      </el-menu-item>
+      <el-menu-item index="2" @click="handleRouterLink(2)">
+        <el-icon><UserFilled /></el-icon>
+        <span>用户管理</span>
+      </el-menu-item>
+      <el-menu-item index="3" @click="handleRouterLink(3)">
+        <el-icon><List /></el-icon>
+        <span>任务管理</span>
+      </el-menu-item>
+      <el-menu-item index="4" @click="handleRouterLink(4)">
+        <el-icon><Shop /></el-icon>
+        <span>商品管理</span>
+      </el-menu-item>
+      <el-menu-item index="5" @click="handleRouterLink(5)">
+        <el-icon><CircleCloseFilled /></el-icon>
+        <span>退出登录</span>
+      </el-menu-item>
+    </el-menu>
     <div class="switch">
       <el-button :plain="true" @click="handleCollapse" circle>
         <el-icon v-show="isCollapse"><Expand /></el-icon>
@@ -38,15 +34,30 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import debounce from '../utils/debounce';
 const router = useRouter();
 const route = useRoute();
 const emits = defineEmits(['collapse']);
 
 const isCollapse = ref(false);
+
 const handleCollapse = () => {
   isCollapse.value = !isCollapse.value;
   emits('collapse', isCollapse.value);
 };
+
+window.addEventListener(
+  'resize',
+  debounce(() => {
+    if (document.documentElement.clientWidth <= 800) {
+      isCollapse.value = true;
+    } else {
+      isCollapse.value = false;
+    }
+    emits('collapse', isCollapse.value);
+
+  })
+);
 
 const defaultActive = ref('1');
 switch (route.name) {
