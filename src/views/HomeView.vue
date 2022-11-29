@@ -27,5 +27,6 @@ const handleCollapse = (isCollapse: boolean) => {
   background-color: #fff;
   box-shadow: 0 0 10px #e8e8e8;
   transition: margin 0.3s linear;
+  height: calc(100vh - 90px);
 }
 </style>
