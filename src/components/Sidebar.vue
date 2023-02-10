@@ -18,6 +18,18 @@
         <span>商品管理</span>
       </el-menu-item>
       <el-menu-item index="5" @click="handleRouterLink(5)">
+        <el-icon><Grid /></el-icon>
+        <span>订单管理</span>
+      </el-menu-item>
+      <el-menu-item index="6" @click="handleRouterLink(6)">
+        <el-icon><Ticket /></el-icon>
+        <span>工单管理</span>
+      </el-menu-item>
+      <el-menu-item index="7" @click="handleRouterLink(7)">
+        <el-icon><Comment /></el-icon>
+        <span>聊天管理</span>
+      </el-menu-item>
+      <el-menu-item index="8" @click="handleRouterLink(8)">
         <el-icon><CircleCloseFilled /></el-icon>
         <span>退出登录</span>
       </el-menu-item>
@@ -55,7 +67,6 @@ window.addEventListener(
       isCollapse.value = false;
     }
     emits('collapse', isCollapse.value);
-
   })
 );
 
@@ -72,6 +83,15 @@ switch (route.name) {
     break;
   case 'Store':
     defaultActive.value = '4';
+    break;
+  case 'Order':
+    defaultActive.value = '5';
+    break;
+  case 'Ticket':
+    defaultActive.value = '6';
+    break;
+  case 'Chat':
+    defaultActive.value = '7';
     break;
 }
 
@@ -90,6 +110,15 @@ const handleRouterLink = (index: number) => {
       router.push({ name: 'Store' });
       break;
     case 5:
+      router.push({ name: 'Order' });
+      break;
+    case 6:
+      router.push({ name: 'Ticket' });
+      break;
+    case 7:
+      router.push({ name: 'Chat' });
+      break;
+    case 8:
       localStorage.removeItem('token');
       router.push({ name: 'Login' });
   }
