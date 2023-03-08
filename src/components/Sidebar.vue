@@ -1,37 +1,11 @@
 <template>
   <el-aside>
-    <el-menu :default-active="defaultActive" :collapse="isCollapse">
-      <el-menu-item index="1" @click="handleRouterLink(1)">
-        <el-icon><HomeFilled /></el-icon>
-        <span>首页</span>
-      </el-menu-item>
-      <el-menu-item index="2" @click="handleRouterLink(2)">
-        <el-icon><UserFilled /></el-icon>
-        <span>用户管理</span>
-      </el-menu-item>
-      <el-menu-item index="3" @click="handleRouterLink(3)">
-        <el-icon><List /></el-icon>
-        <span>任务管理</span>
-      </el-menu-item>
-      <el-menu-item index="4" @click="handleRouterLink(4)">
-        <el-icon><Shop /></el-icon>
-        <span>商品管理</span>
-      </el-menu-item>
-      <el-menu-item index="5" @click="handleRouterLink(5)">
-        <el-icon><Grid /></el-icon>
-        <span>订单管理</span>
-      </el-menu-item>
-      <el-menu-item index="6" @click="handleRouterLink(6)">
-        <el-icon><Ticket /></el-icon>
-        <span>工单管理</span>
-      </el-menu-item>
-      <el-menu-item index="7" @click="handleRouterLink(7)">
-        <el-icon><Comment /></el-icon>
-        <span>聊天管理</span>
-      </el-menu-item>
-      <el-menu-item index="8" @click="handleRouterLink(8)">
-        <el-icon><CircleCloseFilled /></el-icon>
-        <span>退出登录</span>
+    <el-menu :default-active="defaultActive.toString()" :collapse="isCollapse">
+      <el-menu-item v-for="item in sidebarArr" :key="item.name" :index="item.id" @click="handleRouterLink(+item.id)">
+        <el-icon>
+          <component :is="item.icon"></component>
+        </el-icon>
+        <span>{{ item.name }}</span>
       </el-menu-item>
     </el-menu>
     <div class="switch">
@@ -46,18 +20,52 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { ElMessageBox } from 'element-plus';
 import debounce from '../utils/debounce';
 const router = useRouter();
 const route = useRoute();
+const sidebarArr = [
+  { id: '0', icon: 'HomeFilled', name: '首页', to: { name: 'Index' } },
+  { id: '1', icon: 'UserFilled', name: '用户管理', to: { name: 'User' } },
+  { id: '2', icon: 'List', name: '任务管理', to: { name: 'Task' } },
+  { id: '3', icon: 'Shop', name: '商品管理', to: { name: 'Store' } },
+  { id: '4', icon: 'Grid', name: '订单管理', to: { name: 'Order' } },
+  { id: '5', icon: 'Ticket', name: '工单管理', to: { name: 'Ticket' } },
+  { id: '6', icon: 'Comment', name: '聊天管理', to: { name: 'Chat' } },
+  { id: '7', icon: 'CircleCloseFilled', name: '退出登录', to: { name: 'Login' } }
+];
+
+const defaultActive = sidebarArr.filter((item) => item.to.name === route.name)[0].id;
+
+// 路由跳转
+const handleRouterLink = (id: number) => {
+  // 点击退出登录按钮
+  if (id === 7) {
+    ElMessageBox.confirm('是否确认退出？', {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
+      .then(() => {
+        localStorage.removeItem('token');
+        router.push({ name: 'Login' });
+      })
+      .catch(() => {});
+    return;
+  }
+
+  router.push(sidebarArr[id].to);
+};
+
+// 侧边栏收缩功能
 const emits = defineEmits(['collapse']);
-
 const isCollapse = ref(false);
-
 const handleCollapse = () => {
   isCollapse.value = !isCollapse.value;
   emits('collapse', isCollapse.value);
 };
 
+// 窗口变窄 自动收缩
 window.addEventListener(
   'resize',
   debounce(() => {
@@ -69,60 +77,6 @@ window.addEventListener(
     emits('collapse', isCollapse.value);
   })
 );
-
-const defaultActive = ref('1');
-switch (route.name) {
-  case 'Index':
-    defaultActive.value = '1';
-    break;
-  case 'User':
-    defaultActive.value = '2';
-    break;
-  case 'Task':
-    defaultActive.value = '3';
-    break;
-  case 'Store':
-    defaultActive.value = '4';
-    break;
-  case 'Order':
-    defaultActive.value = '5';
-    break;
-  case 'Ticket':
-    defaultActive.value = '6';
-    break;
-  case 'Chat':
-    defaultActive.value = '7';
-    break;
-}
-
-const handleRouterLink = (index: number) => {
-  switch (index) {
-    case 1:
-      router.push({ name: 'Index' });
-      break;
-    case 2:
-      router.push({ name: 'User' });
-      break;
-    case 3:
-      router.push({ name: 'Task' });
-      break;
-    case 4:
-      router.push({ name: 'Store' });
-      break;
-    case 5:
-      router.push({ name: 'Order' });
-      break;
-    case 6:
-      router.push({ name: 'Ticket' });
-      break;
-    case 7:
-      router.push({ name: 'Chat' });
-      break;
-    case 8:
-      localStorage.removeItem('token');
-      router.push({ name: 'Login' });
-  }
-};
 </script>
 
 <style lang="less" scoped>
