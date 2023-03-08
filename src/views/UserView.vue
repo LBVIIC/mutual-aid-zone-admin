@@ -7,13 +7,18 @@
     <el-table-column prop="username" label="用户名" width="160" fixed="left" />
     <el-table-column prop="email" label="邮箱" width="160" />
     <el-table-column prop="phone" label="手机号" width="140" />
-    <el-table-column prop="address" label="地址" width="300"/>
+    <el-table-column prop="address" label="地址" width="300" />
     <el-table-column prop="balance" label="余额" />
     <el-table-column prop="role" label="权限" />
     <el-table-column label="操作" width="140" fixed="right">
       <template #default="scope">
         <el-button size="small" @click="handleEdit(scope.row)">编辑</el-button>
-        <el-popconfirm title="确认要删除吗？" @confirm="handleDelete(scope.row)" confirm-button-text="确认" cancel-button-text="取消">
+        <el-popconfirm
+          title="确认要删除吗？"
+          @confirm="handleDelete(scope.row)"
+          confirm-button-text="确认"
+          cancel-button-text="取消"
+        >
           <template #reference>
             <el-button size="small" type="danger">删除</el-button>
           </template>

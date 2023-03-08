@@ -8,9 +8,9 @@
     <el-table-column prop="getterName" label="接收者" />
     <el-table-column prop="status" label="状态">
       <template #default="scope">
-        <el-tag v-if="scope.row.status === 0" type="info">未接受</el-tag>
-        <el-tag v-else-if="scope.row.status === 1" type="success">已接受</el-tag>
-        <el-tag v-else-if="scope.row.status === 2">已完成</el-tag>
+        <el-tag v-if="scope.row.status === 0" disable-transitions type="info">未接受</el-tag>
+        <el-tag v-else-if="scope.row.status === 1" disable-transitions type="success">已接受</el-tag>
+        <el-tag v-else-if="scope.row.status === 2" disable-transitions>已完成</el-tag>
       </template>
     </el-table-column>
     <el-table-column label="操作" width="140" fixed="right">
@@ -74,25 +74,26 @@
 </template>
 
 <script lang="ts" setup>
-import { watch } from 'vue';
-import { useTask } from '../composables/useTask';
+import { watch, reactive, ref } from 'vue';
+import { ElMessage, FormInstance, FormRules } from 'element-plus';
+import { deleteTask, editTask, getTask, getTasks } from '../api/task';
+import { Task } from '../types';
 
-const {
-  page,
-  pageSize,
-  total,
-  formVisible,
-  formRef,
-  rules,
-  taskList,
-  taskModel,
-  handleTaskList,
-  handleDelete,
-  handleEdit,
-  handleSubmit
-} = useTask();
+const formRef = ref();
+const rules = reactive<FormRules>({
+  title: [{ required: true, message: '标题为必填项', trigger: 'blur' }]
+});
 
-handleTaskList();
+// 获取任务列表
+const taskList = ref<Task[]>([]);
+const page = ref(1);
+const pageSize = 8;
+const total = ref(0);
+const handleTaskList = async () => {
+  const { data: res } = await getTasks(page.value, pageSize);
+  taskList.value = res.data.list;
+  total.value = res.data.total;
+};
 watch(
   () => page.value,
   () => {
@@ -100,6 +101,50 @@ watch(
   },
   { immediate: true }
 );
+
+// 删除任务
+const handleDelete = async (row: any) => {
+  const { data: res } = await deleteTask(row._id);
+  if (res.errno === 0) {
+    ElMessage.success('删除成功');
+    handleTaskList();
+  } else {
+    ElMessage.error(res.msg);
+  }
+};
+
+// 编辑任务
+const formVisible = ref(false);
+const taskModel = ref<Task>({
+  _id: '',
+  title: '',
+  price: 0,
+  setterName: '',
+  getterName: '',
+  status: 0
+});
+const handleEdit = async (row: any) => {
+  formVisible.value = true;
+  const { data: res } = await getTask(row._id);
+  taskModel.value = res.data;
+};
+
+const handleSubmit = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return;
+  await formEl.validate(async (valid, fields) => {
+    if (valid) {
+      const { _id, title, price, status } = taskModel.value;
+      const { data: res } = await editTask(_id, title, price, status);
+      if (res.errno === 0) {
+        ElMessage.success('修改成功');
+        formVisible.value = false;
+        handleTaskList();
+      } else {
+        ElMessage.error(res.msg);
+      }
+    }
+  });
+};
 </script>
 
 <style lang="less" scoped>
