@@ -4,8 +4,8 @@
   <el-table :data="taskList" stripe height="400" style="width: 100%" class="table">
     <el-table-column prop="title" label="标题" />
     <el-table-column prop="price" label="价格" />
-    <el-table-column prop="setterName" label="发布者" />
-    <el-table-column prop="getterName" label="接收者" />
+    <el-table-column prop="setter" label="发布者" />
+    <el-table-column prop="getter" label="接收者" />
     <el-table-column prop="status" label="状态">
       <template #default="scope">
         <el-tag v-if="scope.row.status === 0" disable-transitions type="info">未接受</el-tag>
@@ -51,10 +51,10 @@
         <el-input-number v-model="taskModel.price" :step="10" :min="0" :max="999" />
       </el-form-item>
       <el-form-item label="接收者">
-        <el-input v-model="taskModel.setterName" disabled />
+        <el-input v-model="taskModel.setter" disabled />
       </el-form-item>
       <el-form-item label="发布者">
-        <el-input v-model="taskModel.getterName" disabled />
+        <el-input v-model="taskModel.getter" disabled />
       </el-form-item>
       <el-form-item label="状态">
         <el-radio-group v-model="taskModel.status">
@@ -119,8 +119,8 @@ const taskModel = ref<Task>({
   _id: '',
   title: '',
   price: 0,
-  setterName: '',
-  getterName: '',
+  setter: '',
+  getter: '',
   status: 0
 });
 const handleEdit = async (row: any) => {

@@ -4,7 +4,7 @@ export const getTasks = (page: number, pageSize: number) => {
   return instance.get('/api/task', { params: { page, pageSize } });
 };
 
-export const getTask = (_id: number) => {
+export const getTask = (_id: string) => {
   return instance.get('/api/task/detail', { params: { _id } });
 };
 

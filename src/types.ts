@@ -11,8 +11,8 @@ export interface Task {
   _id: string;
   title: string;
   price: number;
-  setterName: string;
-  getterName: string;
+  setter: string;
+  getter: string;
   status: number;
 }
 
@@ -25,4 +25,12 @@ export interface User {
   address: string;
   balance: number;
   role: string | number;
+}
+
+export interface Ticket {
+  _id: string;
+  user: string;
+  question: string;
+  admin: string;
+  answer: string;
 }
