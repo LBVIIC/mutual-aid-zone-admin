@@ -12,6 +12,6 @@ export const deleteTask = (_id: string) => {
   return instance.post('/api/task/delete', { _id });
 };
 
-export const editTask = (_id: string, title: string, price: number, status: number) => {
-  return instance.post('/api/task/edit', { _id, title, price, status });
+export const editTask = (_id: string, title: string, content: string, price: number, status: number) => {
+  return instance.post('/api/task/edit', { _id, title, content, price, status });
 };

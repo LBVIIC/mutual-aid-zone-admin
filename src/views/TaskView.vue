@@ -8,9 +8,9 @@
     <el-table-column prop="getter" label="接收者" />
     <el-table-column prop="status" label="状态">
       <template #default="scope">
-        <el-tag v-if="scope.row.status === 0" disable-transitions type="info">未接受</el-tag>
-        <el-tag v-else-if="scope.row.status === 1" disable-transitions type="success">已接受</el-tag>
-        <el-tag v-else-if="scope.row.status === 2" disable-transitions>已完成</el-tag>
+        <el-tag :type="scope.row.status === 0 ? 'info' : scope.row.status === 1 ? 'success' : ''" disable-transitions>
+          {{ statusType[scope.row.status] }}
+        </el-tag>
       </template>
     </el-table-column>
     <el-table-column label="操作" width="140" fixed="right">
@@ -47,6 +47,9 @@
       <el-form-item label="标题" prop="title">
         <el-input v-model="taskModel.title" />
       </el-form-item>
+      <el-form-item label="内容" prop="content">
+        <el-input v-model="taskModel.content" type="textarea" maxlength="150" show-word-limit :autosize="true" />
+      </el-form-item>
       <el-form-item label="价格" prop="price">
         <el-input-number v-model="taskModel.price" :step="10" :min="0" :max="999" />
       </el-form-item>
@@ -81,8 +84,15 @@ import { Task } from '../types';
 
 const formRef = ref();
 const rules = reactive<FormRules>({
-  title: [{ required: true, message: '标题为必填项', trigger: 'blur' }]
+  title: [{ required: true, message: '标题为必填项', trigger: 'blur' }],
+  content: [{ required: true, message: '内容为必填项', trigger: 'blur' }]
 });
+
+enum statusType {
+  未接受,
+  已接受,
+  已完成
+}
 
 // 获取任务列表
 const taskList = ref<Task[]>([]);
@@ -118,6 +128,7 @@ const formVisible = ref(false);
 const taskModel = ref<Task>({
   _id: '',
   title: '',
+  content: '',
   price: 0,
   setter: '',
   getter: '',
@@ -127,14 +138,16 @@ const handleEdit = async (row: any) => {
   formVisible.value = true;
   const { data: res } = await getTask(row._id);
   taskModel.value = res.data;
+  taskModel.value.setter = res.data.setter.username;
+  taskModel.value.getter = res.data.getter?.username || '无';
 };
 
 const handleSubmit = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   await formEl.validate(async (valid, fields) => {
     if (valid) {
-      const { _id, title, price, status } = taskModel.value;
-      const { data: res } = await editTask(_id, title, price, status);
+      const { _id, title, content, price, status } = taskModel.value;
+      const { data: res } = await editTask(_id, title, content, price, status);
       if (res.errno === 0) {
         ElMessage.success('修改成功');
         formVisible.value = false;

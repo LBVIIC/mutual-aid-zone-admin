@@ -10,6 +10,7 @@ export interface Good {
 export interface Task {
   _id: string;
   title: string;
+  content: string;
   price: number;
   setter: string;
   getter: string;
