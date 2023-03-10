@@ -8,7 +8,7 @@
     <el-table-column prop="answer" label="回复" show-overflow-tooltip />
     <el-table-column prop="status" label="状态" width="180">
       <template #default="scope">
-        <el-tag :type="scope.row.answer ? 'success' : 'info'" disable-transitions>
+        <el-tag :type="scope.row.answer ? '' : 'info'" disable-transitions>
           {{ scope.row.answer ? '已回复' : '未回复' }}
         </el-tag>
       </template>
