@@ -28,6 +28,16 @@ export interface User {
   role: string | number;
 }
 
+export interface Order {
+  _id: string;
+  good: string;
+  price: number;
+  address: string;
+  user: string;
+  express: string;
+  status: number;
+}
+
 export interface Ticket {
   _id: string;
   user: string;
