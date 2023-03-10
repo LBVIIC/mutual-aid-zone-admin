@@ -22,7 +22,7 @@
 
   <!-- 表单 -->
   <el-dialog v-model="formVisible" title="回复工单">
-    <el-form :model="ticketModel" label-width="80px">
+    <el-form ref="formRef" :model="ticketModel" label-width="80px" :rules="rules">
       <el-form-item label="用户" prop="user">
         <el-input v-model="ticketModel.user" disabled />
       </el-form-item>
@@ -44,17 +44,23 @@
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="formVisible = false">关闭</el-button>
-        <el-button type="primary" @click="handleSubmit()">提交</el-button>
+        <el-button type="primary" @click="handleSubmit(formRef)">提交</el-button>
       </span>
     </template>
   </el-dialog>
 </template>
 
 <script lang="ts" setup>
-import { ElMessage, FormInstance } from 'element-plus';
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { Ticket } from '../types';
 import { getTickets, getTicket, answerTicket } from '../api/ticket';
+import { ElMessage, FormInstance, FormRules } from 'element-plus';
+
+const formRef = ref();
+const rules = reactive<FormRules>({
+  answer: [{ required: true, message: '回答不能为空', trigger: 'blur' }]
+});
+
 const ticketModel = ref<Ticket>({
   _id: '',
   user: '',
@@ -83,16 +89,21 @@ const handleAnswer = (row: any) => {
   handleTickDetail(row._id);
 };
 
-const handleSubmit = async () => {
-  const { _id, answer } = ticketModel.value;
-  const { data: res } = await answerTicket(_id, answer);
-  if (res.errno === 0) {
-    ElMessage.success(res.msg);
-    formVisible.value = false;
-    handleTicketList();
-  } else {
-    ElMessage.error(res.msg);
-  }
+const handleSubmit = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return;
+  await formEl.validate(async (valid, fields) => {
+    if (valid) {
+      const { _id, answer } = ticketModel.value;
+      const { data: res } = await answerTicket(_id, answer);
+      if (res.errno === 0) {
+        ElMessage.success(res.msg);
+        formVisible.value = false;
+        handleTicketList();
+      } else {
+        ElMessage.error(res.msg);
+      }
+    }
+  });
 };
 </script>
 
