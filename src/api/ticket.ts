@@ -1,7 +1,7 @@
 import instance from '../utils/request';
 
 export const getTickets = () => {
-  return instance.get('/api/ticket/all');
+  return instance.get('/api/ticket', { params: { type: 'all' } });
 };
 
 export const getTicket = (_id: string) => {
