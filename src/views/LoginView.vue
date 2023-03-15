@@ -3,7 +3,13 @@
     <!-- form表单容器 -->
     <div class="form-contain">
       <div class="form-contain__signin">
-        <el-form :model="userModel" :rules="rules" ref="loginFormRef" label-width="120px" class="form-contain__signin__form">
+        <el-form
+          :model="userModel"
+          :rules="rules"
+          ref="loginFormRef"
+          label-width="120px"
+          class="form-contain__signin__form"
+        >
           <el-form-item label="用户名" prop="username">
             <el-input type="input" v-model="userModel.username" placeholder="请输入用户名..."></el-input>
           </el-form-item>
@@ -11,9 +17,10 @@
             <el-input type="password" v-model="userModel.password" placeholder="请输入密码..."></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" class="form-contain__signin__form__btn" @click="handleLogin(loginFormRef)">登录</el-button>
+            <el-button type="primary" class="form-contain__signin__form__btn" @click="handleLogin(loginFormRef)">
+              登录
+            </el-button>
           </el-form-item>
-
         </el-form>
       </div>
 
@@ -30,8 +37,36 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { ElMessage, FormInstance } from 'element-plus';
 import { useUser } from '../composables/useUser';
-const { rules, userModel, loginFormRef, handleLogin } = useUser();
+import { login } from '../api/user';
+const { rules, userModel } = useUser();
+const router = useRouter();
+
+// 登录
+const loginFormRef = ref<FormInstance>();
+const handleLogin = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return;
+  await formEl.validate(async (valid, fields) => {
+    const { username, password } = userModel.value;
+    if (valid) {
+      const { data: res } = await login(username, password);
+      if (res.errno === 0) {
+        if (res.data.role === 1) {
+          localStorage.setItem('token', res.data.token);
+          userModel.value.username = '';
+          router.push({ name: 'Index' });
+        } else {
+          ElMessage.error('非管理员无法登录！');
+        }
+      } else {
+        ElMessage.error(res.msg);
+      }
+    }
+  });
+};
 </script>
 
 <style lang="less" scoped>
