@@ -45,3 +45,12 @@ export interface Ticket {
   admin: string;
   answer: string;
 }
+
+export interface Chat {
+  _id: string;
+  sender: { _id: string; username: string };
+  receiver: { _id: string; username: string };
+  content: string;
+  delete: boolean;
+  createdAt: string;
+}
