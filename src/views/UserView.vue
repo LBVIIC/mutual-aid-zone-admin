@@ -51,8 +51,8 @@
     </template>
   </el-dialog>
 
-  <!-- 修改用户表单 -->
-  <el-dialog v-model="editUserFormVisible" title="修改用户">
+  <!-- 编辑用户表单 -->
+  <el-dialog v-model="editUserFormVisible" title="编辑用户">
     <el-form ref="editFormRef" :model="userModel" label-width="80px" :rules="rules">
       <el-form-item label="用户名" prop="username">
         <el-input v-model="userModel.username" :disabled="userModel.username === 'admin'" />

@@ -162,7 +162,7 @@ const handleSubmit = async (formEl: FormInstance | undefined, type: string) => {
         }
         const { data: res } = await editGood(formData);
         if (res.errno === 0) {
-          ElMessage.success('修改商品成功！');
+          ElMessage.success('编辑商品成功！');
           goodFormVisible.value = false;
           handleGoodList();
         } else {

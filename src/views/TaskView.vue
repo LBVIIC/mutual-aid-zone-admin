@@ -5,7 +5,7 @@
     <el-table-column prop="title" label="标题" />
     <el-table-column prop="price" label="价格" />
     <el-table-column prop="setter" label="发布者" />
-    <el-table-column prop="getter" label="接收者" />
+    <el-table-column prop="getter" label="接受者" />
     <el-table-column prop="status" label="状态">
       <template #default="scope">
         <el-tag :type="scope.row.status === 0 ? 'info' : scope.row.status === 1 ? 'success' : ''" disable-transitions>
@@ -53,10 +53,10 @@
       <el-form-item label="价格" prop="price">
         <el-input-number v-model="taskModel.price" :step="10" :min="0" :max="999" />
       </el-form-item>
-      <el-form-item label="接收者">
+      <el-form-item label="发布者">
         <el-input v-model="taskModel.setter" disabled />
       </el-form-item>
-      <el-form-item label="发布者">
+      <el-form-item label="接受者">
         <el-input v-model="taskModel.getter" disabled />
       </el-form-item>
       <el-form-item label="状态">
@@ -149,7 +149,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
       const { _id, title, content, price, status } = taskModel.value;
       const { data: res } = await editTask(_id, title, content, price, status);
       if (res.errno === 0) {
-        ElMessage.success('修改成功');
+        ElMessage.success('编辑成功');
         formVisible.value = false;
         handleTaskList();
       } else {

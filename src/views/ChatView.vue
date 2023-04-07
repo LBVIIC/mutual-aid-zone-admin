@@ -3,7 +3,7 @@
   <!-- 表格 -->
   <el-table :data="chatList" stripe height="460" style="width: 100%" class="table">
     <el-table-column prop="sender.username" label="发送者" width="180" fixed="left" />
-    <el-table-column prop="receiver.username" label="接收者" width="180" fixed="left" />
+    <el-table-column prop="receiver.username" label="接受者" width="180" fixed="left" />
     <el-table-column prop="content" label="回复" show-overflow-tooltip />
     <el-table-column prop="createdAt" label="时间" width="180" />
     <el-table-column prop="status" label="状态" width="180">
