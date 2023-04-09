@@ -23,7 +23,7 @@
   </el-table>
 
   <!-- 表单 -->
-  <el-dialog v-model="formVisible" title="回复工单">
+  <el-dialog v-model="formVisible" title="编辑订单">
     <el-form ref="formRef" :model="orderModel" label-width="80px" :rules="rules">
       <el-form-item label="订单号" prop="id">
         <el-input v-model="orderModel._id" disabled />
