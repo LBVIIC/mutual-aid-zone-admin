@@ -8,7 +8,7 @@
     <el-table-column prop="createdAt" label="时间" width="180" />
     <el-table-column prop="status" label="状态" width="180">
       <template #default="scope">
-        <el-tag :type="scope.row.delete ? 'danger' : ''" disable-transitions>
+        <el-tag :type="scope.row.delete ? 'danger' : 'primary'" disable-transitions>
           {{ scope.row.delete ? '删除' : '正常' }}
         </el-tag>
       </template>

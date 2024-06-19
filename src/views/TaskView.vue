@@ -8,7 +8,7 @@
     <el-table-column prop="getter" label="接受者" />
     <el-table-column prop="status" label="状态">
       <template #default="scope">
-        <el-tag :type="scope.row.status === 0 ? 'info' : scope.row.status === 1 ? 'success' : ''" disable-transitions>
+        <el-tag :type="scope.row.status === 0 ? 'info' : scope.row.status === 1 ? 'success' : 'primary'" disable-transitions>
           {{ statusType[scope.row.status] }}
         </el-tag>
       </template>

@@ -10,7 +10,7 @@
     <el-table-column prop="express" label="快递单号" width="250" />
     <el-table-column prop="status" label="状态" width="120">
       <template #default="scope">
-        <el-tag :type="scope.row.status === 0 ? 'info' : scope.row.status === 1 ? 'success' : ''" disable-transitions>
+        <el-tag :type="scope.row.status === 0 ? 'info' : scope.row.status === 1 ? 'success' : 'primary'" disable-transitions>
           {{ statusType[scope.row.status] }}
         </el-tag>
       </template>
@@ -44,7 +44,7 @@
         <el-input v-model="orderModel.express" />
       </el-form-item>
       <el-form-item label="状态">
-        <el-tag :type="orderModel.status === 0 ? 'info' : orderModel.status === 1 ? 'success' : ''" disable-transitions>
+        <el-tag :type="orderModel.status === 0 ? 'info' : orderModel.status === 1 ? 'success' : 'primary'" disable-transitions>
           {{ statusType[orderModel.status] }}
         </el-tag>
       </el-form-item>
