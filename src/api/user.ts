@@ -1,28 +1,28 @@
 import instance from '../utils/request';
 
 export const login = (username: string, password: string) => {
-  return instance.post('/api/user/login', {
+  return instance.post('/user/login', {
     username,
     password
   });
 };
 
 export const getUsers = () => {
-  return instance.get('/api/user');
+  return instance.get('/user');
 };
 
 export const getUser = (_id: string) => {
-  return instance.get('/api/user/detail', { params: { _id } });
+  return instance.get('/user/detail', { params: { _id } });
 };
 
 export const deleteUser = (_id: string) => {
-  return instance.post('/api/user/delete', {
+  return instance.post('/user/delete', {
     _id
   });
 };
 
 export const createUser = (username: string, phone: string, email: string, password: string) => {
-  return instance.post('/api/user/register', {
+  return instance.post('/user/register', {
     username,
     phone,
     email,
@@ -40,7 +40,7 @@ export const editUser = (
   balance: number,
   role: number
 ) => {
-  return instance.post('/api/user/edit', {
+  return instance.post('/user/edit', {
     _id,
     username,
     password,

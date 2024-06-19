@@ -1,22 +1,22 @@
 import instance from '../utils/request';
 
 export const getGoods = () => {
-  return instance.get('/api/store');
+  return instance.get('/store');
 };
 
 export const getGood = (_id: string) => {
-  return instance.get('/api/store/detail', { params: { _id } });
+  return instance.get('/store/detail', { params: { _id } });
 }
 
 export const createGood = (formData: FormData) => {
-  return instance.post('/api/store/create', formData);
+  return instance.post('/store/create', formData);
 };
 
 export const editGood = (formData: FormData) => {
-  return instance.post('/api/store/edit', formData);
+  return instance.post('/store/edit', formData);
 };
 
 export const deleteGood = (_id: string) => {
-  return instance.post('/api/store/delete', { _id });
+  return instance.post('/store/delete', { _id });
 };
 

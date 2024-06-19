@@ -1,9 +1,9 @@
 import instance from '../utils/request';
 
 export const getChats = () => {
-  return instance.get('/api/chat');
+  return instance.get('/chat');
 };
 
 export const deleteChat = (_id: string) => {
-  return instance.post('/api/chat/delete', { _id });
+  return instance.post('/chat/delete', { _id });
 };
